@@ -1,4 +1,4 @@
-export function connect(endpoint, options) {
+exports.connect = (endpoint, options) => {
     var subscriptions = {};
     var pending = [];
     var pendingReplies = {};
