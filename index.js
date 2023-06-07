@@ -1,4 +1,4 @@
-import { W3CWebSocket as WebSocket } from "websocket";
+import WebSocket from "ws";
 
 export default (endpoint, options) => {
     var subscriptions = {};
@@ -96,7 +96,7 @@ export default (endpoint, options) => {
   
       socket = new WebSocket(endpoint);
   
-      socket.onopen = function (e) {
+      socket.on('open', () => {
         setStatus("connected");
   
         recordActivity();
@@ -116,9 +116,9 @@ export default (endpoint, options) => {
         while ((data = pending.shift())) {
           socket.send(data);
         }
-      };
+      });
   
-      socket.onmessage = function (event) {
+      socket.on('message', (event) =>  {
         recordActivity();
   
         try {
@@ -144,9 +144,9 @@ export default (endpoint, options) => {
             delete pendingReplies[message.replyId];
           }
         } catch (e) {}
-      };
+      });
   
-      socket.onclose = function (event) {
+      socket.on('close', (event) => {
         if (event && !event.wasClean && status != "closed") {
           setStatus("reconnecting");
   
@@ -162,11 +162,11 @@ export default (endpoint, options) => {
             reconnectTimeout = options.initialReconnectTimeout;
           }
         }
-      };
+      });
   
-      socket.onerror = function (error) {
+      socket.on('error', (error) => {
         debug("websocket error");
-      };
+      });
     }
   
     function nextId() {
