@@ -8,5 +8,11 @@
   },
   "type": "module",
   "author": "MultiSafepay",
-  "license": "ISC"
+  "repository": {
+    "url": "https://github.com/MultiSafepay/message-bus"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "websocket": "^1.0.34"
+  }
 }

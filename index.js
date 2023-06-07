@@ -1,4 +1,6 @@
-exports.connect = (endpoint, options) => {
+import { W3CWebSocket as WebSocket } from "websocket";
+
+export default (endpoint, options) => {
     var subscriptions = {};
     var pending = [];
     var pendingReplies = {};
