@@ -4,20 +4,20 @@ import WebSocket from 'ws';
  * Initializes the socket connected to the specified endpoint.
  * Allows you to define custom options. Token option is required.
  * @param {string} endpoint
- * @param {
+ * @param {{
  *  debug?: boolean,
  *  initialReconnectTimeout?: number,
  *  reconnectTimeoutFactor?:number,
  *  maxReconnectTimeout?: number,
  *  keepAliveTimeout?: number,
  *  token: string,
- * } customOptions
- * @returns {
+ * }} customOptions
+ * @returns {{
  *  on: () => void,
- *  subscribe: (channel, filter, callback) => void,
- *  unsubscribe: (channel) => void,
+ *  subscribe: (channel: string, filter, callback: (data) => void) => void,
+ *  unsubscribe: (channel:string) => void,
  *  close: () => void,
- * }
+ * }}
  */
 const messageBus = (endpoint, customOptions) => {
   const subscriptions = {};
@@ -169,9 +169,9 @@ const messageBus = (endpoint, customOptions) => {
       recordActivity();
 
       try {
-        debug(`message received: ${event.data}`);
+        debug(`message received: ${event}`);
 
-        const message = JSON.parse(event.data);
+        const message = JSON.parse(event);
 
         if (message.type === 'event') {
           const subscription = subscriptions[message.channel];
