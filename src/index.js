@@ -1,25 +1,4 @@
-import WebSocket from 'ws';
-
-/**
- * Initializes the socket connected to the specified endpoint.
- * Allows you to define custom options. Token option is required.
- * @param {string} endpoint
- * @param {{
- *  debug?: boolean,
- *  initialReconnectTimeout?: number,
- *  reconnectTimeoutFactor?:number,
- *  maxReconnectTimeout?: number,
- *  keepAliveTimeout?: number,
- *  token: string,
- * }} customOptions
- * @returns {{
- *  on: () => void,
- *  subscribe: (channel: string, filter, callback: (data) => void) => void,
- *  unsubscribe: (channel:string) => void,
- *  close: () => void,
- * }}
- */
-const messageBus = (endpoint, customOptions) => {
+const methodWrapper = (WebSocket, endpoint, customOptions) => {
   const subscriptions = {};
   const pending = [];
   const pendingReplies = {};
@@ -144,7 +123,7 @@ const messageBus = (endpoint, customOptions) => {
 
     socket = new WebSocket(processedEndpoint);
 
-    socket.on('open', () => {
+    socket.onopen = () => {
       setStatus('connected');
 
       recordActivity();
@@ -163,15 +142,15 @@ const messageBus = (endpoint, customOptions) => {
       while (pending.length) {
         socket.send(pending.shift());
       }
-    });
+    };
 
-    socket.on('message', (event) => {
+    socket.onmessage = (event) => {
       recordActivity();
 
       try {
-        debug(`message received: ${event}`);
+        debug(`message received: ${event.data}`);
 
-        const message = JSON.parse(event);
+        const message = JSON.parse(event.data);
 
         if (message.type === 'event') {
           const subscription = subscriptions[message.channel];
@@ -193,9 +172,9 @@ const messageBus = (endpoint, customOptions) => {
       } catch (e) {
         debug(e);
       }
-    });
+    };
 
-    socket.on('close', (event) => {
+    socket.onclose = (event) => {
       if (event && !event.wasClean && status !== 'closed') {
         setStatus('reconnecting');
 
@@ -211,11 +190,11 @@ const messageBus = (endpoint, customOptions) => {
           reconnectTimeout = options.initialReconnectTimeout;
         }
       }
-    });
+    };
 
-    socket.on('error', () => {
+    socket.onerror = () => {
       debug('websocket error');
-    });
+    };
   }
 
   setupHeartbeats();
@@ -321,4 +300,4 @@ const messageBus = (endpoint, customOptions) => {
   };
 };
 
-export default messageBus;
+export default methodWrapper;

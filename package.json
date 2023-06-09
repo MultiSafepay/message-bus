@@ -2,7 +2,6 @@
   "name": "message-bus",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,6 +11,8 @@
     "url": "https://github.com/MultiSafepay/message-bus"
   },
   "license": "ISC",
+  "main": "./src/node/index.js",
+  "browser": "./src/browser/index.js",
   "dependencies": {
     "ws": "^8.13.0"
   },
