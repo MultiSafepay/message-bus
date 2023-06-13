@@ -34,12 +34,17 @@ yarn add multisafepay/message-bus
 In case you want to use in plain HTML, you should have the code base of this plugin accesible, either at folder level or having the code deployed somewhere.
 
 ## Usage
+In order to get everything you need for initializating the plugin, you will have to make a valid order request to our MultiSafepay API.
+If you have any doubts on how to do this, [follow these instructions](https://docs.multisafepay.com/recipes/cloud-pos-payments)
 
 Set up the client for testing with **ES6 imports**:
 
 ```javascript
 import connect from '@multisafepay/message-bus';
-const messageBus = connect('events_url', { token: events_token });
+
+const { events_url, events_token } = orderResponse.data;
+
+const messageBus = connect(events_url, { token: events_token });
 ```
 
 With **script tag**:
@@ -47,7 +52,10 @@ With **script tag**:
 ```html
  <script type="module">
     import connect from `${PLUGIN_ROUTE}/src/browser/index.js`
-    const messageBus = connect('events_url', { token: events_token });
+
+    const { events_url, events_token } = orderResponse.data;
+
+    const messageBus = connect(events_url, { token: events_token });
 </script>
 ```
 
