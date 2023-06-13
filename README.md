@@ -22,13 +22,13 @@ MultiSafepay is a Dutch payment service provider, which takes care of contracts,
 With npm:
 
 ```sh
-npm install @multisafepay/message-bus --save
+npm install multisafepay/message-bus --save
 ```
 
 And yarn:
 
 ```sh
-yarn add @multisafepay/message-bus
+yarn add multisafepay/message-bus
 ```
 
 In case you want to use in plain HTML, you should have the code base of this plugin accesible, either at folder level or having the code deployed somewhere.
