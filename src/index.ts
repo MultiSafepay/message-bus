@@ -1,26 +1,29 @@
-const methodWrapper = (WebSocket, endpoint, customOptions) => {
-  const subscriptions = {};
-  const pending = [];
-  const pendingReplies = {};
-  const events = {};
-  const timeouts = {};
-  let status = 'connecting';
-  let socket;
-  let lastActivityTimestamp;
-  let reconnectTimeout;
+import { TransactionResponse, customOptions, events, options, pendingReplies, reconnect, subscription } from "./types/index.js";
 
-  const options = {
+const methodWrapper = (WebSocket: any, endpoint: string, customOptions: customOptions) => {
+  const subscriptions: subscription[] = [];
+  const pending: string[] = [];
+  const pendingReplies: pendingReplies = {};
+  const events: events = {};
+  const timeouts: reconnect = {};
+  let status = 'connecting';
+  let socket: typeof WebSocket;
+  let lastActivityTimestamp: number;
+  let reconnectTimeout: number;
+
+  const options: options = {
     debug: customOptions.debug || false,
     initialReconnectTimeout: customOptions.initialReconnectTimeout || 1000,
     reconnectTimeoutFactor: customOptions.reconnectTimeoutFactor || 2,
     maxReconnectTimeout: customOptions.maxReconnectTimeout || 60000,
     keepAliveTimeout: customOptions.keepAliveTimeout || 30000,
-    token: customOptions.token || null,
+    token: customOptions.token,
+    nextId: customOptions.nextId || undefined,
   };
 
-  reconnectTimeout = options.initialReconnectTimeout;
+  reconnectTimeout = options.initialReconnectTimeout!;
 
-  function debug(...args) {
+  const debug = (...args: any[]) => {
     if (options.debug && console) {
       console.log.apply(this, args);
     }
@@ -32,7 +35,7 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
     lastActivityTimestamp = new Date().getTime();
   }
 
-  function send(data) {
+  function send(data: object) {
     const dataStr = JSON.stringify(data);
 
     if (status !== 'connected') {
@@ -49,7 +52,7 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
   function nextId() {
     if (options.nextId) return options.nextId();
 
-    const result = [];
+    const result: string[] = [];
     const hexRef = [
       '0',
       '1',
@@ -79,7 +82,7 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
     if (status === 'connected') {
       if (
         !lastActivityTimestamp
-          || new Date().getTime() - lastActivityTimestamp > options.keepAliveTimeout
+          || new Date().getTime() - lastActivityTimestamp > options.keepAliveTimeout!
       ) {
         debug('heartbeat');
 
@@ -96,7 +99,7 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
     }, options.keepAliveTimeout);
   }
 
-  function setStatus(newStatus) {
+  function setStatus(newStatus: string) {
     debug(`status: ${newStatus}`);
 
     status = newStatus;
@@ -111,7 +114,7 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
 
     if (!endpoint) throw new Error('No endpoint to connect');
 
-    let processedEndpoint;
+    let processedEndpoint: string;
 
     if (options.token) {
       if (/\?/.test(endpoint)) {
@@ -119,6 +122,8 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
       } else {
         processedEndpoint = `${endpoint}?token=${options.token}`;
       }
+    } else {
+      throw new Error("No token specified");
     }
 
     socket = new WebSocket(processedEndpoint);
@@ -128,15 +133,15 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
 
       recordActivity();
 
-      Object.values(subscriptions).forEach((channel) => {
+      subscriptions.forEach((subscription) => {
         send({
           id: nextId(),
           type: 'subscribe',
-          channel,
-          filter: subscriptions[channel].filter,
+          channel: subscription.channel,
+          filter: subscription.filter,
         });
 
-        debug(`resubscribed: ${channel}`);
+        debug(`resubscribed: ${subscription.channel}`);
       });
 
       while (pending.length) {
@@ -144,7 +149,7 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
       }
     };
 
-    socket.onmessage = (event) => {
+    socket.onmessage = (event: MessageEvent) => {
       recordActivity();
 
       try {
@@ -153,7 +158,9 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
         const message = JSON.parse(event.data);
 
         if (message.type === 'event') {
-          const subscription = subscriptions[message.channel];
+          const subscription = subscriptions.find((subscription) =>
+            subscription.channel === message.channel
+          );
 
           if (subscription) {
             subscription.callback(message.payload);
@@ -174,7 +181,7 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
       }
     };
 
-    socket.onclose = (event) => {
+    socket.onclose = (event: CloseEvent) => {
       if (event && !event.wasClean && status !== 'closed') {
         setStatus('reconnecting');
 
@@ -208,20 +215,20 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
      * @param {*} ev
      * @param {() => void} callback
      */
-    on: (ev, callback) => {
+    on: (ev: string, callback: () => void) => {
       events[ev] = callback;
     },
 
     /**
      * Subscribes to the specified channel.
      * This allows you to specify a callback that will be executed when you receive a new message
-     * @param {string} channel
-     * @param {object} filter
-     * @param {() => void} callback
-     * @returns
+     * @param channel 
+     * @param filter 
+     * @param callback 
+     * @returns 
      */
-    subscribe: async (channel, filter, callback) => {
-      if (subscriptions[channel]) {
+    subscribe: async (channel: string, filter: any, callback: (payload: TransactionResponse) => void): Promise<void> => {
+      if (subscriptions.find((subscription) => subscription.channel === channel)) {
         debug(`already subscribed: ${channel}`);
 
         throw new Error('Already subscribed');
@@ -232,11 +239,8 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
         id,
         type: 'subscribe',
         channel,
+        filter: filter ? filter : undefined
       };
-
-      if (filter != null) {
-        data.filter = filter;
-      }
 
       send(data);
 
@@ -245,19 +249,22 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
       }).then(() => {
         debug(`subscribed: ${channel}`);
 
-        subscriptions[channel] = {};
-        subscriptions[channel].callback = callback;
-        subscriptions[channel].filter = filter;
+        subscriptions.push({
+          channel,
+          callback,
+          filter
+        });
       });
     },
 
     /**
      * Unsuscribes from the specified channel
-     * @param {*} channel
-     * @returns
+     * @param channel 
+     * @returns 
      */
-    unsubscribe: async (channel) => {
-      if (subscriptions[channel]) {
+    unsubscribe: async (channel: string): Promise<void> => {
+      const subscriptionIndex = subscriptions.findIndex((subscription) => subscription.channel === channel)
+      if (subscriptionIndex !== -1) {
         const id = nextId();
 
         send({
@@ -269,7 +276,7 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
         return new Promise((resolve, reject) => {
           pendingReplies[id] = [resolve, reject];
         }).then(() => {
-          delete subscriptions[channel];
+          subscriptions.splice(subscriptionIndex, 1);
 
           debug(`unsubscribed: ${channel}`);
         });
@@ -283,7 +290,7 @@ const methodWrapper = (WebSocket, endpoint, customOptions) => {
      * Closes the connection with the socket and clears the timeouts
      * @returns
      */
-    close: () => {
+    close: (): Promise<void> => {
       debug('closing');
 
       if (timeouts.reconnect) {

@@ -2,11 +2,11 @@
     <img src="https://camo.githubusercontent.com/517483ae0eaba9884f397e9af1c4adc7bbc231575ac66cc54292e00400edcd10/68747470733a2f2f7777772e6d756c7469736166657061792e636f6d2f66696c6561646d696e2f74656d706c6174652f696d672f6d756c7469736166657061792d6c6f676f2d69636f6e2e737667" width="400px" position="center">
 </p>
 
-# Cross-platform WebSocket plugin for the MultiSafepay API
+# Cross-platform ES6 module WebSocket plugin for the MultiSafepay API
 
 This plugin simplifies working with the MultiSafepay API and lets you listen to the events received from your Payment Terminals.
 
-You can use this plugin in a Node.js backend or in any javascript frontend.
+You can use this plugin in a Node.js backend based on ES6 or in any javascript frontend.
 
 ## About MultiSafepay
 
@@ -22,13 +22,13 @@ MultiSafepay is a Dutch payment service provider, which takes care of contracts,
 With npm:
 
 ```sh
-npm install multisafepay/message-bus --save
+npm install @multisafepay/message-bus --save
 ```
 
 And yarn:
 
 ```sh
-yarn add multisafepay/message-bus
+yarn add @multisafepay/message-bus
 ```
 
 In case you want to use in plain HTML, you should have the code base of this plugin accesible, either at folder level or having the code deployed somewhere.
@@ -38,14 +38,7 @@ In case you want to use in plain HTML, you should have the code base of this plu
 Set up the client for testing with **ES6 imports**:
 
 ```javascript
-import connect from 'multisafepay/message-bus';
-const messageBus = connect('events_url', { token: events_token });
-```
-
-With **require module**:
-
-```javascript
-const connect = require('multisafepay/message-bus').default;
+import connect from '@multisafepay/message-bus';
 const messageBus = connect('events_url', { token: events_token });
 ```
 
