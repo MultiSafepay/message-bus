@@ -14,7 +14,6 @@ MultiSafepay is a Dutch payment service provider, which takes care of contracts,
 
 ## Requirements
 
-- You will need a MultiSafepay account. Consider [creating a test account](https://testmerchant.multisafepay.com/signup) first.
 - If using Node 8.0+, we recommend using async/await. For older versions of Node, use promises or callbacks instead of async/await.
 
 ## Installation
