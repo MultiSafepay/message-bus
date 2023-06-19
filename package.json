@@ -12,7 +12,11 @@
   "repository": {
     "url": "https://github.com/MultiSafepay/message-bus"
   },
-  "license": "ISC",
+  "licenses": [
+    {
+      "license": "MIT"
+    }
+  ],
   "main": "./dist/src/node/index.js",
   "module": "./dist/src/node/index.js",
   "browser": "./dist/src/browser/index.js",
