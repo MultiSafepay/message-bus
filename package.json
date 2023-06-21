@@ -1,10 +1,10 @@
 {
   "name": "@multisafepay/message-bus",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf ./dist && npx tsc --build",
+    "build": "rm -rf ./dist && npx tsc",
     "prepare": "npm run build"
   },
   "type": "module",
