@@ -20,6 +20,4 @@ if (typeof WebSocket !== 'undefined') {
  * @param customOptions 
  * @returns 
  */
-const messageBus = (endpoint: string, customOptions: customOptions) => wrapper(ws, endpoint, customOptions);
-
-export default messageBus;
+export default (endpoint: string, customOptions: customOptions) => wrapper(ws, endpoint, customOptions);

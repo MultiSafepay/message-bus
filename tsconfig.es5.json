@@ -5,8 +5,8 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": false,
-    "module": "ES6",
-    "moduleResolution": "node16",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": false,
@@ -15,9 +15,9 @@
     "removeComments": true,
     "resolveJsonModule": true,
     "strict": true,
-    "target": "ES6",
+    "target": "ES5",
     "rootDir": "src/",
-    "outDir": "dist/esm"
+    "outDir": "dist/cjs"
   },
   "include": [
     "src/**/*"
