@@ -9,6 +9,4 @@ import { customOptions } from '../types/index.js';
  * @param customOptions 
  * @returns 
  */
-const messageBus = (endpoint: string, customOptions: customOptions) => wrapper(WebSocket, endpoint, customOptions);
-
-export default messageBus;
+export default (endpoint: string, customOptions: customOptions) => wrapper(WebSocket, endpoint, customOptions);
