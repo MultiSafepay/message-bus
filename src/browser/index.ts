@@ -1,4 +1,4 @@
-import { customOptions } from '../types/index.js';
+import { MessageBus, customOptions } from '../types/index.js';
 import wrapper from '../index.js';
 
 let ws: any = undefined;
@@ -20,4 +20,4 @@ if (typeof WebSocket !== 'undefined') {
  * @param customOptions 
  * @returns 
  */
-export default (endpoint: string, customOptions: customOptions) => wrapper(ws, endpoint, customOptions);
+export default ((endpoint: string, customOptions: customOptions) => wrapper(ws, endpoint, customOptions)) as MessageBus;

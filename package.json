@@ -1,6 +1,6 @@
 {
   "name": "@multisafepay/message-bus",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,19 +21,18 @@
     ".": {
       "require": {
         "default": "./dist/cjs/node/index.js",
-        "types": "./dist/cjs/types/index.d.ts"
+        "types": "./dist/cjs/node/index.d.ts"
       },
       "browser": {
         "default": "./dist/esm/browser/index.js"
       },
       "import": {
         "default": "./dist/esm/node/index.js",
-        "types": "./dist/esm/types/index.d.ts"
+        "types": "./dist/esm/node/index.d.ts"
       }
     }
   },
   "main": "./dist/cjs/node/index.js",
-  "types": "./dist/esm/types/index.d.ts",
   "module": "./dist/esm/node/index.js",
   "browser": "./dist/esm/browser/index.js",
   "dependencies": {

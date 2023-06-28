@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 import wrapper from '../index.js';
-import { customOptions } from '../types/index.js';
+import { MessageBus, customOptions } from '../types/index.js';
 
 /**
  * Initializes the socket connected to the specified endpoint.
@@ -9,4 +9,4 @@ import { customOptions } from '../types/index.js';
  * @param customOptions 
  * @returns 
  */
-export default (endpoint: string, customOptions: customOptions) => wrapper(WebSocket, endpoint, customOptions);
+export default ((endpoint: string, customOptions: customOptions) => wrapper(WebSocket, endpoint, customOptions)) as MessageBus;

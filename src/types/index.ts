@@ -45,3 +45,11 @@ export interface TransactionResponse {
 }
 
 export type PaymentStatus = 'initialized' | 'completed' | 'cancelled' | 'void' | 'expired' | 'declined' | 'uncleared';
+
+export type MessageBus =
+    (endpoint: string, customOptions: customOptions) => {
+        on: (ev: string, callback: () => void) => void
+        subscribe: (channel: string, filter: any, callback: (payload: TransactionResponse) => void) => Promise<void>
+        unsubscribe: (channel: string) => Promise<void>
+        close: () => Promise<void>
+    }
