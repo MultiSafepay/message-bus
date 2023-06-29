@@ -1,6 +1,6 @@
 {
   "name": "@multisafepay/message-bus",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Official cross-platform WebSocket plugin for the MultiSafepay API",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -8,7 +8,7 @@
     "prepare": "npm run build"
   },
   "type": "module",
-  "author": "Miguel Moreno <miguel.moreno@multisafepay.com>",
+  "author": "MultiSafepay <integration@multisafepay.com>",
   "homepage": "https://github.com/MultiSafepay/message-bus",
   "repository": {
     "type": "git",
