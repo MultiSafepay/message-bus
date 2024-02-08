@@ -1,25 +1,23 @@
 {
-  "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "importHelpers": false,
-    "module": "ES6",
-    "moduleResolution": "node16",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "preserveConstEnums": true,
-    "removeComments": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "target": "ES6",
-    "rootDir": "src/",
-    "outDir": "dist/esm"
-  },
-  "include": [
-    "src/**/*"
-  ]
+    "compilerOptions": {
+        "composite": true,
+        "declaration": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "importHelpers": false,
+        "module": "Node16",
+        "moduleResolution": "node16",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "preserveConstEnums": true,
+        "removeComments": true,
+        "resolveJsonModule": true,
+        "strict": true,
+        "target": "ES6",
+        "rootDir": "src/",
+        "outDir": "dist/esm"
+    },
+    "include": ["src/**/*"]
 }
