@@ -1,64 +1,64 @@
 {
-  "name": "@multisafepay/message-bus",
-  "version": "1.2.1",
-  "description": "Official cross-platform WebSocket plugin for the MultiSafepay API",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf ./dist && npx tsc && npx tsc --project tsconfig.es5.json && ./fixType",
-    "prepare": "npm run build"
-  },
-  "type": "module",
-  "author": "MultiSafepay <integration@multisafepay.com>",
-  "homepage": "https://github.com/MultiSafepay/message-bus",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/MultiSafepay/message-bus"
-  },
-  "bugs": {
-    "url": "https://github.com/MultiSafepay/message-bus/issues"
-  },
-  "engines": {
-    "node": ">=10.0.0"
-  },
-  "keywords": [
-    "multisafepay",
-    "nodejs",
-    "browser",
-    "WebSocket",
-    "order",
-    "commonjs",
-    "es6"
-  ],
-  "licenses": [
-    {
-      "license": "MIT"
+    "name": "@multisafepay/message-bus",
+    "version": "1.2.2",
+    "description": "Official cross-platform WebSocket plugin for the MultiSafepay API",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "rm -rf ./dist && npx tsc && npx tsc --project tsconfig.es5.json && ./fixType",
+        "prepare": "npm run build"
+    },
+    "type": "module",
+    "author": "MultiSafepay <integration@multisafepay.com>",
+    "homepage": "https://github.com/MultiSafepay/message-bus",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MultiSafepay/message-bus"
+    },
+    "bugs": {
+        "url": "https://github.com/MultiSafepay/message-bus/issues"
+    },
+    "engines": {
+        "node": ">=10.0.0"
+    },
+    "keywords": [
+        "multisafepay",
+        "nodejs",
+        "browser",
+        "WebSocket",
+        "order",
+        "commonjs",
+        "es6"
+    ],
+    "licenses": [
+        {
+            "license": "MIT"
+        }
+    ],
+    "exports": {
+        ".": {
+            "require": {
+                "types": "./dist/cjs/node/index.d.ts",
+                "default": "./dist/cjs/node/index.js"
+            },
+            "browser": {
+                "default": "./dist/esm/browser/index.js"
+            },
+            "import": {
+                "types": "./dist/esm/node/index.d.ts",
+                "default": "./dist/esm/node/index.js"
+            }
+        }
+    },
+    "main": "./dist/cjs/node/index.js",
+    "module": "./dist/esm/node/index.js",
+    "browser": "./dist/esm/browser/index.js",
+    "dependencies": {
+        "ws": "^8.13.0"
+    },
+    "devDependencies": {
+        "@types/ws": "^8.5.5",
+        "eslint": "^8.42.0",
+        "tslint-config-prettier": "^1.18.0",
+        "typescript": "^5.1.3"
     }
-  ],
-  "exports": {
-    ".": {
-      "require": {
-        "default": "./dist/cjs/node/index.js",
-        "types": "./dist/cjs/node/index.d.ts"
-      },
-      "browser": {
-        "default": "./dist/esm/browser/index.js"
-      },
-      "import": {
-        "default": "./dist/esm/node/index.js",
-        "types": "./dist/esm/node/index.d.ts"
-      }
-    }
-  },
-  "main": "./dist/cjs/node/index.js",
-  "module": "./dist/esm/node/index.js",
-  "browser": "./dist/esm/browser/index.js",
-  "dependencies": {
-    "ws": "^8.13.0"
-  },
-  "devDependencies": {
-    "@types/ws": "^8.5.5",
-    "eslint": "^8.42.0",
-    "tslint-config-prettier": "^1.18.0",
-    "typescript": "^5.1.3"
-  }
 }
